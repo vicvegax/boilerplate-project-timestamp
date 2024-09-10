@@ -45,27 +45,31 @@ app.get("/api/users", (req, res) => {
 });
 
 var exercises = [];
-app.post("/api/users/:id/exercises", (req, res) => {
-  const id = req.params['id'];
-  // exercises.push({ 
-  //   "username": users[id].username,
-  //   "description": req.body["description"],
-  //   "duration": Number(req.body['duration']),
-  //   "date": req.body['date'] ? (new Date(req.body['date'])).toDateString() : (new Date()).toDateString(),
-  //   "_id": id,
-  // });
-  // console.log(exercises[exercises.length-1]);
-  // res.send(exercises[exercises.length-1]);
-  //for(let i=0; i< users.length; i++) {
-    //if(users[i]._id === id) {
-      users[id].description = req.body["description"];
-      users[id].duration = Number(req.body['duration']);
-      users[id].date = req.body['date'] ? (new Date(req.body['date'])).toDateString() : (new Date()).toDateString();
-      //break;
-    //}
-  //}
-  console.log(req.body, users[id]);
-  res.send(users[id]);
+app.post("/api/users/:_id/exercises", (req, res) => {
+  try {
+    const id = req.params['_id'];
+    exercises.push({ 
+      "username": users[id].username,
+      "description": req.body["description"],
+      "duration": Number(req.body['duration']),
+      "date": (req.body['date'] ? new Date(req.body['date']) : new Date()).toDateString(),
+      "_id": id,
+    });
+    console.log(exercises[exercises.length-1]);
+    res.send(exercises[exercises.length-1]);
+    //for(let i=0; i< users.length; i++) {
+      //if(users[i]._id === id) {
+        // users[id].description = req.body["description"];
+        // users[id].duration = Number(req.body['duration']);
+        // users[id].date = (req.body['date'] ? new Date(req.body['date']) : new Date()).toDateString();
+        // break;
+      // }
+    // }
+    // console.log(users[id]);
+    // res.json(users[id]);
+  } catch(err) {
+    console.log(err);
+  }
 });
 
 var urls = [];
