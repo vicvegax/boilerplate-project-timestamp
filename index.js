@@ -12,7 +12,7 @@ const dns = require('node:dns');
 var cors = require('cors');
 
 app.use(cors({optionsSuccessStatus: 200}));  // some legacy browsers choke on 204
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
@@ -28,7 +28,7 @@ app.post('/api/users', (req, res) => {
   let id = undefined;
   for(let i=0; i< users.length; i++) {
     if(users[i].username === req.body['username']) {
-      id = i;
+      //id = i;
       break;
     }
   }
@@ -46,16 +46,20 @@ app.get("/api/users", (req, res) => {
 
 var exercises = [];
 app.post("/api/users/:_id/exercises", (req, res) => {
+  console.log(req.body);
   try {
-    const id = req.params['_id'];
+    
+    const _id = req.params['_id'];
     exercises.push({ 
-      "username": users[id].username,
-      "description": req.body["description"],
-      "duration": Number(req.body['duration']),
-      "date": (req.body['date'] ? new Date(req.body['date']) : new Date()).toDateString(),
-      "_id": id,
+      _id: _id,
+      username: users[_id].username,
+      date: (req.body['date'] ? new Date(req.body['date']) : new Date()).toDateString(),
+      duration: Number(req.body['duration']),
+      description: req.body["description"],
     });
-    console.log(exercises[exercises.length-1]);
+    console.log(JSON.stringify(exercises[exercises.length-1]));
+    //res.send(JSON.stringify(exercises[exercises.length-1]));
+    //res.json(exercises[exercises.length-1]);
     res.send(exercises[exercises.length-1]);
     //for(let i=0; i< users.length; i++) {
       //if(users[i]._id === id) {
